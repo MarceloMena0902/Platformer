@@ -5,6 +5,7 @@
 [Bb]uilds/
 [Ll]ogs/
 [Uu]serSettings/
+.vs/
 
 [Aa]ssets/Plugins.meta
 *.csproj
