@@ -249,7 +249,11 @@ MonoBehaviour:
   passengerMask:
     serializedVersion: 2
     m_Bits: 64
-  move: {x: 0, y: 0, z: 0}
+  localWaypoints: []
+  speed: 0
+  cyclic: 0
+  waitTime: 0
+  easeAmount: 0
 --- !u!61 &543048673
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -579,7 +583,14 @@ MonoBehaviour:
   passengerMask:
     serializedVersion: 2
     m_Bits: 64
-  move: {x: 0, y: -1, z: 0}
+  localWaypoints:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 2.1, z: 0}
+  - {x: 3.1, y: 2.1, z: 0}
+  speed: 2
+  cyclic: 1
+  waitTime: 0
+  easeAmount: 1
 --- !u!1 &1914470684
 GameObject:
   m_ObjectHideFlags: 0
