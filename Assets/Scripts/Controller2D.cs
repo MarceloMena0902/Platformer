@@ -13,7 +13,7 @@ public class Controller2D : RaycastController
     {
         base.Start();
     }
-    public void Move(Vector3 velocity)
+    public void Move(Vector3 velocity, bool standingOnPlatform = false)
     {
         UpdateRaycastOrigins();
         collisions.Reset();
@@ -34,6 +34,10 @@ public class Controller2D : RaycastController
         }        
 
         transform.Translate(velocity);
+        if(standingOnPlatform)
+        {
+            collisions.below = true;
+        }
     }
 
     void HorizontalCollisions(ref Vector3 velocity)
@@ -51,8 +55,13 @@ public class Controller2D : RaycastController
 
             if (hit)
             {
-                float slopAngle = Vector2.Angle(hit.normal, Vector2.up);
-                if(i == 0 && slopAngle<= maxClimbAngle)
+                if (hit.distance == 0)
+                {
+                    continue;
+                }
+
+                float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
+                if(i == 0 && slopeAngle<= maxClimbAngle)
                 {
                     if (collisions.descendingSlope)
                     {
@@ -60,16 +69,16 @@ public class Controller2D : RaycastController
                         velocity = collisions.velocityOld;
                     }
                     float distanceToSlopeStart = 0;
-                    if(slopAngle != collisions.slopeAngleOld)
+                    if(slopeAngle != collisions.slopeAngleOld)
                     {
                         distanceToSlopeStart = hit.distance-skinWidth;
                         velocity.x -= distanceToSlopeStart * directionX;
                     }
-                    ClimbSlope(ref velocity,slopAngle);
+                    ClimbSlope(ref velocity,slopeAngle);
                     velocity.x += distanceToSlopeStart * directionX;
                 }
                 
-                if(!collisions.climbingSlope || slopAngle>maxClimbAngle)
+                if(!collisions.climbingSlope || slopeAngle>maxClimbAngle)
                 {
                     velocity.x = (hit.distance - skinWidth) * directionX;
                     //esto cambié para que no vibre
