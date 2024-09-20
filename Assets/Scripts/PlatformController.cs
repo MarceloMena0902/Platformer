@@ -62,6 +62,7 @@ public class PlatformController : RaycastController
         fromWaypointIndex %= globalWaypoints.Length;
         int toWaypointIndex = (fromWaypointIndex + 1)%globalWaypoints.Length;
         float distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
+        
         percentBetweenWaypoints += Time.deltaTime * speed / distanceBetweenWaypoints;
         percentBetweenWaypoints = Mathf.Clamp01(percentBetweenWaypoints);
         float easedPercentBetweenWaypoints = Ease (percentBetweenWaypoints);
