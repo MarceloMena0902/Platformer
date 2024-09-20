@@ -15,6 +15,7 @@ public class Controller2D : MonoBehaviour
 
     BoxCollider2D collider;
     RaycastOrigins raycastOrigins;
+    public CollisionInfo collisions;
     void Start()
     {
         collider = GetComponent<BoxCollider2D> ();
@@ -24,6 +25,8 @@ public class Controller2D : MonoBehaviour
     public void Move(Vector3 velocity)
     {
         UpdateRaycastOrigins();
+        collisions.Reset();
+
         if(velocity.x != 0)
         {
             HorizontalCollisions(ref velocity);
@@ -52,7 +55,15 @@ public class Controller2D : MonoBehaviour
             if (hit)
             {
                 velocity.x = (hit.distance - skinWidth) * directionX;
+                //esto cambié para que no vibre
+                if (directionX == 1 || directionX == -1)
+                {
+                    velocity.x = 0;  // Detenemos el movimiento horizontal
+                }
                 rayLength = hit.distance;
+
+                collisions.left = directionX == -1;
+                collisions.right = directionX == 1;
             }
         }
     }
@@ -72,11 +83,15 @@ public class Controller2D : MonoBehaviour
             if (hit)
             {
                 velocity.y = (hit.distance - skinWidth) * directionY;
+                //esto cambié para que no vibre
                 if (directionY == -1) // Si está cayendo
                 {
                     velocity.y = 0; // Detenemos el movimiento vertical al chocar con el suelo u obstáculo
                 }
                 rayLength = hit.distance;
+
+                collisions.below = directionY == -1;
+                collisions.above = directionY == 1;
             }
         }
     }
@@ -108,6 +123,17 @@ public class Controller2D : MonoBehaviour
     {
         public Vector2 topLeft, topRight;
         public Vector2 bottomLeft, bottomRight;
+    }
+
+    public struct CollisionInfo
+    {
+        public bool above, below;
+        public bool left, right;
+        public void Reset()
+        {
+            above = below = false;
+            left = right = false;
+        }
     }
 }
 
